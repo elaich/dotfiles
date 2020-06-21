@@ -1,6 +1,6 @@
 /*******************************************************************************
  * ROFI Color theme
- * User: Tung Cena
+ * User: Marouane Elaich
  * Copyright: Tung Cena
  *******************************************************************************/
 
@@ -17,8 +17,8 @@
     background:                  rgba (10,10,10, 0.69);
     border-color:                @foreground;
     bordercolor:                 rgba ( 39, 50, 56, 100 % );
-    font:                        "Nerd Font Iosevka Heavy 14";
-    foreground:                  rgba (  159,179,199, 100 % );
+    font:                        "Iosevka Term Regular 14";
+    foreground:                  #cfd8dc;
     lightbg:                     rgba ( 238, 232, 213, 100 % );
     lightfg:                     rgba ( 88, 104, 117, 100 % );
     normal-background:           rgba ( 39, 50, 56, 100 % );
@@ -44,14 +44,19 @@
     width:            100%;
 }
 #mainbox {
-    border:  0;
-    padding: 0;
+    border:         1;
+    border-color: @separatorcolor;
+    border-radius:  10;
+    padding:        20;
 }
+
 #message {
     border:  0;
     padding: 0;
 }
 #textbox {
+    border:  2;
+    border-color: "#7c4790";
     text-color: @foreground;
 }
 
@@ -60,15 +65,16 @@
     fixed-height: 0;
     border:       0;
     border-color: @separatorcolor;
-    spacing:      15px;
+    spacing:      10px;
     scrollbar:    false;
     padding:      0;
 }
 
 // Result
 #element {
-    border:  0;
-    padding: 0;
+    border:  0 1;
+    border-color: @separatorcolor;
+    padding: 0 10;
 }
 #element.normal.normal {
     background-color: @transparent;
@@ -122,9 +128,10 @@
     text-color:       @selected-normal-foreground;
 }
 #inputbar {
+    border: 1;
     spacing:    0;
     text-color: @normal-foreground;
-    padding:    0 0 10px;
+    padding:    10px;
 }
 #case-indicator {
     spacing:    0;

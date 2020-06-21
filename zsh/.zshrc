@@ -15,7 +15,7 @@
 ZSH_THEME="spaceship"
 
 # Plugin list in ~/.oh-my-zsh/plugins
-plugins=(git git-prompt ruby rails)
+plugins=(git git-prompt gitfast)
 
 # Disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
@@ -104,3 +104,18 @@ transfer() {
   cat $tmpfile;
   rm -f $tmpfile;
 }
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/ninja/google-cloud-sdk/path.zsh.inc' ]; then . '/home/ninja/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/ninja/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/ninja/google-cloud-sdk/completion.zsh.inc'; fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Krew Bin Directory - Kubectl plugins
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

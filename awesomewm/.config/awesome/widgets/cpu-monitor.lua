@@ -55,7 +55,7 @@ awesome.connect_signal("daemon::cpu", function(cpus)
   local nb_cpu = #cpus
   --naughty.notify({ text = tostring(nb_cpu) })
   for i = 1, nb_cpu do 
-    pbars[i].value = tostring(cpus[i])
+    pbars[i] = tostring(cpus[i])
   end
 end)
 

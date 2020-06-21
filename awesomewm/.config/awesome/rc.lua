@@ -2,8 +2,6 @@
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
--- Widget and layout library
-local wibox = require("wibox")
 -- Theme handling library
 local beautiful = require("beautiful")
 -- Notification library
@@ -13,16 +11,13 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
-
--- {{{ Variable definitions
--- Themes define colours, icons, font and wallpapers.
+-- wibar
 local theme = require("loaded-theme")
-naughty.notify({ text = "theme "..theme.name.." is loaded" })
+-- local bar = require("bars.anonymous")
 
 local keys = require("keys")
 local helpers = require("helpers")
 local env = require("env-config")
-local sidebar = require("layouts.sidebar")
 local start_screen = require("layouts.start_screen")
 
 -- Start daemons
@@ -125,69 +120,27 @@ awful.screen.connect_for_each_screen(function(s)
   -- Each screen has its own tag table.
   --awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
   local l = awful.layout.suit -- Alias to save time :)
-  -- local layouts = { l.max, l.floating, l.max, l.max , l.tile,
-  --     l.max, l.max, l.max, l.floating, l.tile}
-  local layouts = { 
-    l.tile, l.max, l.tile, l.floating , l.max,
-    l.tile, l.tile, l.tile, l.max, l.max
-  }
-
-  -- Tag names
-  local tagnames = beautiful.tagnames or { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }
 
   -- Create tags
-  awful.tag.add(tagnames[1], {
-    layout = layouts[1],
+  awful.tag.add("term", {
+    -- layout = layouts[1],
+    -- know more: https://awesomewm.org/doc/api/libraries/awful.layout.html#Client_layouts
+    layout = l.tile.right,
+    master_width_factor = 0.55,
     screen = s,
-    gap_single_client  = false,
+    -- gap = beautiful.useless_gap,
     selected = true,
   })
-  awful.tag.add(tagnames[2], {
-    layout = layouts[2],
-    gap_single_client  = false,
+  awful.tag.add("web", {
+    layout = l.max,
+    gap_single_client  = true,
     screen = s,
   })
-  awful.tag.add(tagnames[3], {
-    layout = layouts[3],
-    master_width_factor = 0.34,
-    --gap = 4,
-    column_count = 2,
-    screen = s,
-  })
-  awful.tag.add(tagnames[4], {
-    layout = layouts[4],
-    master_width_factor = 0.6,
-    screen = s,
-  })
-  awful.tag.add(tagnames[5], {
-    layout = layouts[5],
-    gap_single_client  = false,
-    screen = s,
-  })
-  awful.tag.add(tagnames[6], {
-    layout = layouts[6],
-    gap = 40,
-    screen = s,
-  })
-  awful.tag.add(tagnames[7], {
-    layout = layouts[7],
-    gap = 4,
-    screen = s,
-  })
-  awful.tag.add(tagnames[8], {
-    layout = layouts[8],
-    master_width_factor = 0.33,
-    gap = 3,
-    column_count = 2,
-    screen = s,
-  })
-  awful.tag.add(tagnames[9], {
-    layout = layouts[9],
-    screen = s,
-  })
-  awful.tag.add(tagnames[10], {
-    layout = layouts[10],
-    screen = s,
+  awful.tag.add("other", {
+      layout = l.max,
+      gap_single_client  = true,
+      gap = 30,
+      screen = s,
   })
 end)
 -- }}}
@@ -246,6 +199,7 @@ awful.rules.rules = {
     instance = {
       "DTA",  -- Firefox addon DownThemAll.
       "copyq",  -- Includes session name in class.
+      "mupdf",
     },
     class = {
       "mpv",
@@ -363,6 +317,9 @@ awful.rules.rules = {
 
   -- Centered windows
   { rule_any = {
+    instance = {
+      "mupdf",
+    },
     class = {
       "feh",
       "Sxiv",
@@ -376,24 +333,13 @@ awful.rules.rules = {
 
   -- Set Firefox to always map on the tag named "2" on screen 1.
   { rule = { class = "Brave-browser" },
-    properties = { screen = 1, tag = beautiful.tagnames[2] } },
+    properties = { screen = 1, tag = "web"} },
 
-  { rule = { class = "music*" },
-    properties = { screen = 1, tag = beautiful.tagnames[4] } },
+  { rule = { class = "qutebrowser" },
+    properties = { tag = "web" } },
 
-  { rule = { class = "Gimp" },
-    properties = { screen = 1, tag = beautiful.tagnames[5] } },
-
-  { rule = { class = "mail" },
-    properties = { screen = 1, tag = beautiful.tagnames[6] } },
-  { rule = { class = "chat" },
-    properties = { screen = 1, tag = beautiful.tagnames[6] } },
-  { rule_any = {
-    class = {
-      "baldur.exe",
-      "Wine"
-    },
-  },properties = { screen = 1, tag = beautiful.tagnames[8] } },
+  { rule = { class = "Slack" },
+    properties = { tag = "web" } }
 }
 -- }}}
 

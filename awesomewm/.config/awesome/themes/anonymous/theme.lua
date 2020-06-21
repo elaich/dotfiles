@@ -13,6 +13,7 @@ local layout_icon_path = os.getenv("HOME") .. "/.config/awesome/themes/" .. them
 local xrdb = xresources.get_current_theme()
 local wibox = require("wibox")
 local taglist_icon_path = os.getenv("HOME") .. "/.config/awesome/themes/" .. theme_name .. "/taglist/"
+local battery_icon_path = os.getenv("HOME") .. "/.config/awesome/themes/" .. theme_name .. "/battery/"
 
 -- screen size
 local ascreen = require("awful.screen")
@@ -25,7 +26,7 @@ local theme = {}
 -- bg
 theme.grey_dark = "#202a34"
 theme.grey = xrdb.background
-theme.grey_light = xrdb.color0
+theme.grey_light = "#31404f"
 
 theme.primary_dark = xrdb.color6
 theme.primary = xrdb.color2
@@ -61,9 +62,9 @@ theme.fg_focus      = theme.fg_primary_focus
 theme.fg_urgent     = theme.fg_alert
 theme.fg_minimize   = theme.fg_primary
 
-theme.border_width  = dpi(5)
+theme.border_width  = dpi(8)
 theme.screen_margin = dpi(6)
-theme.useless_gap   = dpi(5)
+theme.useless_gap   = 30
 theme.border_normal = theme.grey_dark
 theme.border_focus  = theme.grey_light
 theme.border_marked = theme.grey
@@ -72,7 +73,7 @@ theme.border_marked = theme.grey
 theme.general_padding = { left = dpi(6), right = dpi(6), top = dpi(6), bottom = dpi(6) }
 
 -- rounded corners
-theme.border_radius = dpi(8)
+theme.border_radius = 0
 theme.wibar_position = "top"
 
 -- {{{ TITLEBAR 
@@ -84,12 +85,13 @@ theme.titlebar_bg_focus = theme.grey_dark
 theme.titlebars_enabled = true 
 theme.titlebar_title_enabled = true 
 theme.titlebars_imitate_borders = false
+theme.titlebar_height = 40
 
 -- }}} End TITLEBAR
 
 -- Top bar
 theme.wibar_size = dpi(42)
-theme.wibar_width = screen_width - dpi(126)
+theme.wibar_width = screen_width - (2 * theme.screen_margin) - (4 * theme.useless_gap)
 
 theme.wibar_bg = theme.grey .. "00"
 theme.wibar_border_radius = dpi(0)
@@ -105,7 +107,6 @@ end
 -- {{{ TAGLIST
 
 -- Nerd Font icon here
-theme.tagnames = {" 1 "," 2 "," 3 "," 4 "," 5 "," 6 "," 7 "," 8 "," 9 "," 10 "}
 -- mini_taglist
 --theme.taglist_text_occupied = {"","","ﲵ","ﱘ","","","","","","ﮊ"}
 --theme.taglist_text_focused = {"","","ﲵ","ﱘ","","","","","","ﮊ"}
@@ -219,10 +220,12 @@ theme.widget_ram_bg = theme.grey .. "ff"
 theme.widget_ram_layout = 'vertical' -- horizontal or vertical
 
 -- Battery
-theme.widget_battery_icon_discharging = ""
-theme.widget_battery_icon_charging = ""
-theme.widget_battery_icon_full = ""
-theme.widget_battery_icon_ac = "臘"
+theme.widget_battery_icon_discharging = battery_icon_path .. "battery-level.png"
+theme.widget_battery_icon_charging = battery_icon_path .. "charging-battery.png"
+theme.widget_battery_icon_full = battery_icon_path .. "full-battery.png"
+theme.widget_battery_icon_unknown = battery_icon_path .. "battery-unknown.png"
+theme.widget_battery_icon_alert = battery_icon_path .. "battery-alert.png"
+
 theme.widget_battery_fg = theme.fg_secondary
 theme.widget_battery_bg = theme.grey .. "ff"
 theme.widget_battery_layout = 'vertical' -- horizontal or vertical
@@ -253,6 +256,10 @@ theme.widget_date_layout = 'vertical' -- horizontal or vertical
 theme.widget_scrot_fg = theme.fg_grey
 theme.widget_scrot_icon = '  '
 
+-- Clock
+theme.widget_clock_font = 'Atomic Age'
+theme.widget_clock_font_size = 25
+
 -- Change theme
 theme.widget_change_theme_bg = theme.grey_dark .. "00"
 theme.widget_change_theme_fg = theme.fg_grey
@@ -261,5 +268,13 @@ theme.widget_change_theme_icon_reload = ' 勒'
 theme.widget_change_theme_layout = 'vertical' -- horizontal or vertical
 
 -- }}} End WIDGET
+
+-- Notifications
+theme.notification_icon_size = 50
+theme.notification_font = 'Iosevka Term Light 9'
+theme.notification_opacity = 0.9
+theme.notification_max_width = 500
+theme.notification_max_height = 150
+theme.notification_shape = function(cr, width, height) gears.shape.rounded_rect(cr, width, height, 10) end 
 
 return theme

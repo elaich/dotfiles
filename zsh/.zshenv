@@ -60,3 +60,7 @@ export GEM_HOME=$HOME/.gems
 
 # If mpd port is different than default 6600
 # export MPD_PORT="6600"
+
+# Project Directories
+export sablebackend=$HOME/projects/sable/backend
+export keys=$HOME/projects/keys

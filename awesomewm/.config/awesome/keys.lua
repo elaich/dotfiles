@@ -5,6 +5,7 @@ local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 local mymainmenu = require("menu")
 local env = require("env-config")
+local xrandr = require("xrandr")
 
 local keys = {}
 
@@ -140,6 +141,9 @@ keys.globalkeys = gtable.join(
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
 
+    -- Dual monitor
+    awful.key({ modkey, }, "a", function() xrandr.xrandr() end),
+
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
@@ -173,7 +177,7 @@ keys.globalkeys = gtable.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+    awful.key({ modkey },            "r",     function () awful.spawn.with_shell("recorder") end,
               {description = "run prompt", group = "launcher"}),
 
     awful.key({ modkey }, "x",
@@ -189,6 +193,14 @@ keys.globalkeys = gtable.join(
     -- Rofi
     awful.key({ modkey }, "p", function() awful.spawn.with_shell("launcher") end,
               {description = "rofi launcher", group = "launcher"}),
+
+    -- Task List
+    awful.key({ modkey }, "t", function()
+      local t = awful.tag.find_by_name(awful.screen.focused(), "other")
+      t:view_only()
+      awful.spawn.with_shell("tasklist")
+    end, {description = "set tiled layout", group = "launcher"}),
+   
 
     -- Music Control (volume)
     awful.key({ altkey, "Control" }, "Up", function() 
@@ -218,8 +230,18 @@ keys.globalkeys = gtable.join(
     awful.key({ altgrkey }, "F9", function() awful.spawn.with_shell("xbacklight +1") end,
               {description = "light mode", group = "brightness"}),
     awful.key({ altgrkey }, "F8", function() awful.spawn.with_shell("xbacklight -1") end,
-              {description = "dark mode", group = "brightness"})
+              {description = "dark mode", group = "brightness"}),
 
+    -- qutebrowser
+    awful.key({ modkey }, "q", function() awful.spawn("qutebrowser") end,
+              {description = "Browser launcher", group = "launcher"}),
+    -- Google Chrome
+    awful.key({ modkey }, "g", function() awful.spawn("google-chrome-stable") end,
+              {description = "Google Chrome launcher", group = "launcher"}),
+
+    -- Slack
+    awful.key({ modkey }, "s", function() awful.spawn("slack") end,
+              {description = "Slack launcher", group = "launcher"})
     -- Gap
     --awful.key({ altkey }, "y",
     --function() 
@@ -235,38 +257,19 @@ keys.clientkeys = gtable.join(
   awful.key({ altkey, "Shift" }, "Left", function (c) c:relative_move( -40, 0, 0, 0 ) end),
   awful.key({ altkey, "Shift" }, "Right", function (c) c:relative_move( 40, 0, 0, 0 ) end),
   
-  awful.key({ modkey,           }, "f", function (c)
+  awful.key({ modkey, "Shift" }, "f", function (c)
     c.fullscreen = not c.fullscreen
     c:raise()
   end,
   {description = "toggle fullscreen", group = "client"}),
-
-  -- Set tiled layout
-  awful.key({ modkey }, "t", function()
-    awful.layout.set(awful.layout.suit.tile)
-  end,
-  {description = "set tiled layout", group = "tag"}),
-      
+   
   -- Set or toggle/floating on client focus
-  awful.key({ modkey }, "s", function(c) 
-    local current_layout = awful.layout.getname(awful.layout.get(awful.screen.focused()))
-    if current_layout == "floating" then
-      awful.client.floating.toggle()
-    else
-      c.width = screen_width * 0.7
-      c.height = screen_height * 0.75
-      c.floating = true
-      awful.placement.centered(c,{honor_workarea=true})
-      c:raise()
-    end
-  end,
-  {description = "focus mode floating", group = "client"}),
+  awful.key({ modkey }, "f", awful.client.floating.toggle, 
+  {description = "toggle floating mode", group = "client"}),
 
     awful.key({ modkey }, "z",      function (c) c:kill() end,
               {description = "close", group = "client"}),
 
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
-              {description = "toggle floating", group = "client"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,

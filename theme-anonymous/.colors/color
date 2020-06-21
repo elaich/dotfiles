@@ -38,5 +38,5 @@
 *color11:      #d8f5e9
 
 ! st font
-st.font: Iosevka Term:style=Regular:pixelsize=14
-st.opacity: 255
+! st.font: Iosevka Term:style=Regular:pixelsize=14
+! st.opacity: 240

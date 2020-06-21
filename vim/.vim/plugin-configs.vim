@@ -1,19 +1,81 @@
+" fuzzy finder
+nnoremap <Leader>o :GFiles<CR>
+nnoremap <Leader>O :GFiles?<CR>
+
+" close current buffer
+nnoremap <Leader>c :bd<CR>
+
+" show lightline-bufferline
+set laststatus=2
+set showtabline=2
+
+" default lightline configuration
+let g:lightline = {
+  \ 'component_function': {
+  \   'filename': 'FileName',
+  \   'gitbranch': 'GitBranch',
+  \   'filencode': 'FileEncoding',
+  \   'readonly': 'LightLineReadonly',
+  \   'filename_active': 'LightlineFilenameActive',
+  \   'filetype': 'LightLineFiletype',
+  \   'fileformat': 'LightLineFileformat',
+  \ },
+  \ 'component_expand': {
+  \   'linter_checking': 'WizChecking',
+  \   'linter_warnings': 'WizWarnings',
+  \   'linter_errors': 'WizErrors',
+  \   'linter_ok': 'WizOk',
+  \   'buffers': 'lightline#bufferline#buffers',
+  \ },
+  \ 'component_type': {
+  \   'readonly': 'error',
+  \   'linter_checking': 'left',
+  \   'linter_warnings': 'warning',
+  \   'linter_errors': 'error',
+  \   'linter_ok': 'left',
+  \   'buffers': 'tabsel',
+  \ }
+  \}
+
+let g:lightline.colorscheme = 'Anonymous'
+let g:lightline.tabline = {'left': [['buffers']], 'right': [['close']] }
+let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+let g:lightline.component_type   = {'buffers': 'tabsel'}
+let g:lightline.component = { 'close': 'ﴔ ', 'path': '%-f' }
+let g:lightline.separator = { 'left': '', 'right': '' }
+let g:lightline.active = {
+  \   'left': [ ['mode', 'paste'],
+  \             ['gitbranch'], ['path'] ],
+  \   'right': [ [ 'percent', 'lineinfo', 'fileformat' ],
+  \             [ 'filencode', 'filetype' ] ],
+  \ }
+let g:lightline.inactive = {
+  \   'left': [ ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ],
+  \           [ 'filename_active' ] ],
+  \   'right':[['lineinfo']],
+  \ }
+
 "" Gruvbox colorscheme
 let g:gruvbox_contrast_dark = 'soft'
 set background=dark
 
 "" NERDTree Configuration, https://github.com/scrooloose/nerdtree
+let NERDTreeAutoCenter = 1
+let NERDTreeAutoCenterThreshold = 5
+let NERDTreeWinSize = 40
 let NERDTreeChDirMode = 2
-let NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.sqlite$', '__pycache__']
+let NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.sqlite$', '__pycache__', 'yarn.lock', 'yarn-error.log']
 let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$','\.bak$', '\~$']
 let NERDTreeShowBookmarks = 1
 let NERDTree_tabs_focus_on_files=1
+let NERDTreeStatusLine=-1
 let NERDTreeMapOpenInTabSilent = '<RightMouse>'
-let NERDTreeWinSize = 25
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 nnoremap <silent> <F2> :NERDTreeFind<CR>
+nnoremap <Leader>n :NERDTreeFocus<CR>
+nnoremap <Leader>b :NERDTreeFromBookmar<Space>
 map <F3> :NERDTreeToggle<CR>
 
 "" gnupg.vim, http://www.vim.org/scripts/script.php?script_id=3645
@@ -65,35 +127,6 @@ set laststatus=2
 
 " show lightline-bufferline
 set showtabline=2
-
-" default lightline configuration
-let g:lightline = {
-  \ 'component_function': {
-  \   'filename': 'FileName',
-  \   'gitbranch': 'GitBranch',
-  \   'filencode': 'FileEncoding',
-  \   'readonly': 'LightLineReadonly',
-  \   'filename_active': 'LightlineFilenameActive',
-  \   'filetype': 'LightLineFiletype',
-  \   'fileformat': 'LightLineFileformat',
-  \ },
-  \ 'component_expand': {
-  \   'linter_checking': 'WizChecking',
-  \   'linter_warnings': 'WizWarnings',
-  \   'linter_errors': 'WizErrors',
-  \   'linter_ok': 'WizOk',
-  \   'buffers': 'lightline#bufferline#buffers',
-  \ },
-  \ 'component_type': {
-  \   'readonly': 'error',
-  \   'linter_checking': 'left',
-  \   'linter_warnings': 'warning',
-  \   'linter_errors': 'error',
-  \   'linter_ok': 'left',
-  \   'buffers': 'tabsel',
-  \ }
-  \}
-
 " lighline functions
 function! FileName()
   let l:fn = expand("%:t")
@@ -194,3 +227,11 @@ augroup alestatus
   autocmd User ALEFixPost call lightline#update()
 augroup END
 
+
+" Load all plugins now.
+" Plugins need to be added to runtimepath before helptags can be generated.
+packloadall
+
+" Load all of the helptags now, after plugins have been loaded.
+" All messages and errors will be ignored.
+silent! helptags ALL

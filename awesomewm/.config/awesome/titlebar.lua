@@ -68,6 +68,7 @@ local mytitle = function(c)
           widget = wibox.container.margin,
         },
         buttons = buttons,
+        forced_height = 80,
         layout  = wibox.layout.flex.horizontal
       }
     end
@@ -139,7 +140,7 @@ client.connect_signal("request::titlebars", function(c)
 
   -- add a titlebar if titlebars_enabled is true
   if beautiful.titlebars_enabled then
-    awful.titlebar(c, { size = beautiful.titlebar_size, position = position }) : setup {
+    awful.titlebar(c, { height = beautiful.titlebar_height, size = beautiful.titlebar_size, position = position }) : setup {
       { -- Left
       --awful.titlebar.widget.iconwidget(c),
       --buttons = mbuttons(c),
