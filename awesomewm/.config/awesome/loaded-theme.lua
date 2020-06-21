@@ -1,0 +1,1 @@
+../../dotfiles/theme-anonymous/.config/awesome/loaded-theme.lua
